@@ -3,9 +3,13 @@ var Movie = Backbone.Model.extend({
   defaults: {
     like: true
   },
-
   toggleLike: function() {
     // your code here
+
+    this.set('like', !this.get('like'));
+    this.collection.sort();
+    // console.log(this.defaults.like);
+    // console.log(this.get('like'));
   }
 
 });
@@ -22,6 +26,8 @@ var Movies = Backbone.Collection.extend({
 
   sortByField: function(field) {
     // your code here
+    this.comparator = field;
+    this.sort();
   }
 
 });
@@ -35,6 +41,7 @@ var AppView = Backbone.View.extend({
   handleClick: function(e) {
     var field = $(e.target).val();
     this.collection.sortByField(field);
+    this.render();
   },
 
   render: function() {
@@ -59,14 +66,18 @@ var MovieView = Backbone.View.extend({
 
   initialize: function() {
     // your code here
+    this.render();
   },
 
   events: {
     'click button': 'handleClick'
   },
 
-  handleClick: function() {
+  handleClick: function(e) {
     // your code here
+    this.model.toggleLike();
+    this.render();
+
   },
 
   render: function() {
@@ -80,6 +91,7 @@ var MoviesView = Backbone.View.extend({
 
   initialize: function() {
     // your code here
+    this.render();
   },
 
   render: function() {
